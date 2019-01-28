@@ -10,6 +10,7 @@ class ExampleApp(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.setupUi(self)
         self.Button_Swap.clicked.connect(lambda: self.ButtonClicked(ButtonType="swap"))
         self.Button_Translate.clicked.connect(lambda: self.ButtonClicked(ButtonType="trans"))
+        self.Button_Clean.clicked.connect(self.Clean_Textbox)
         self.Combo_Input.activated[str].connect(self.ComboBoxInput)
         self.Combo_Output.activated[str].connect(self.ComboBoxOutput)
         self.TranslatorObj = googletrans.Translator()
@@ -25,14 +26,15 @@ class ExampleApp(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
                 self.TextBoxSwap()
                 self.ComboBoxSwap()
 
+    def Clean_Textbox(self):
+        self.Text_Input.clear()
+        self.Text_Output.clear()
+
     def Translate_Function(self):
         inputText = self.Text_Input.toPlainText()
         self.Text_Output.clear()
-        if not self.ComboOutputValue:
-            self.ComboOutputValue = "en"
-        if not self.ComboInputValue:
-            self.ComboInputValue = "auto"
         OutputText = self.TranslateText(InputTranslate=inputText, InputLanguage=self.ComboInputValue, OutputLanguage=self.ComboOutputValue)
+        self.Combo_Input.setCurrentText(str(self.TranslatedSource))
         self.Text_Output.append(OutputText)
 
     def TranslateText(self, InputTranslate, InputLanguage, OutputLanguage):
