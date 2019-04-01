@@ -1,0 +1,4 @@
+googletrans==2.4.0
+PyQt5==5.9.2
+docx==0.8.10
+odfpy==1.4.0

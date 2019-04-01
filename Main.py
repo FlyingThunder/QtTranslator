@@ -2,11 +2,14 @@ from PyQt5 import QtWidgets
 import sys
 import QtOutput
 import googletrans
+from BrowseFileSystem import FileSystemWindow
 
+class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
 
-class ExampleApp(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
+    Translator_FileSystem = FileSystemWindow()
+
     def __init__(self, parent=None):
-        super(ExampleApp, self).__init__(parent)
+        super(Translator, self).__init__(parent)
         self.setupUi(self)
         self.Button_Swap.clicked.connect(lambda: self.ButtonClicked(ButtonType="swap"))
         self.Button_Translate.clicked.connect(lambda: self.ButtonClicked(ButtonType="trans"))
@@ -16,6 +19,8 @@ class ExampleApp(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.TranslatorObj = googletrans.Translator()
         self.ComboInputValue = "auto"
         self.ComboOutputValue = "en"
+        self.ButtonImportFile.clicked.connect(self.ImportFile)
+
 
     def ButtonClicked(self, ButtonType):
         if ButtonType == "trans":
@@ -73,9 +78,14 @@ class ExampleApp(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.ComboBoxInput()
         self.ComboBoxOutput()
 
+
+    def ImportFile(self):
+
+        print(self.Translator_FileSystem().OutputFinal)
+
 def main():
     app = QtWidgets.QApplication(sys.argv)
-    form = ExampleApp()
+    form = Translator()
     form.show()
     app.exec_()
 
