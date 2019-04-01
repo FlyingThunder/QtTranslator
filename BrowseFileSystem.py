@@ -6,6 +6,7 @@ import sys
 
 class FileSystemWindow(QWidget):
     def __init__(self):
+        self.FinalOutputText = ""
         super().__init__()
         self.title = 'Filedialog'
         self.left = 10
@@ -13,6 +14,7 @@ class FileSystemWindow(QWidget):
         self.width = 640
         self.height = 480
         self.initUI()
+
 
     def initUI(self):
         self.setWindowTitle(self.title)
@@ -31,7 +33,10 @@ class FileSystemWindow(QWidget):
     def getODTText(self):
         textdoc = load("Test.odt")
         allparas = textdoc.getElementsByType(text.P)
-        return teletype.extractText(allparas[0])
+        self.FinalOutputText = teletype.extractText(allparas[0])
+
+
+        #TODO: Add .txt, .pdf, .docx support
 
 
 if __name__ == '__main__':

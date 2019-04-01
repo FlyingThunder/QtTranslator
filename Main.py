@@ -2,15 +2,14 @@ from PyQt5 import QtWidgets
 import sys
 import QtOutput
 import googletrans
-from BrowseFileSystem import FileSystemWindow
+import BrowseFileSystem
 
 class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
-
-    Translator_FileSystem = FileSystemWindow()
 
     def __init__(self, parent=None):
         super(Translator, self).__init__(parent)
         self.setupUi(self)
+        self.LocalFileClass = lambda: BrowseFileSystem.FileSystemWindow()
         self.Button_Swap.clicked.connect(lambda: self.ButtonClicked(ButtonType="swap"))
         self.Button_Translate.clicked.connect(lambda: self.ButtonClicked(ButtonType="trans"))
         self.Button_Clean.clicked.connect(self.Clean_Textbox)
@@ -80,8 +79,8 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
 
 
     def ImportFile(self):
-
-        print(self.Translator_FileSystem().OutputFinal)
+        self.Text_Input.clear()
+        self.Text_Input.append(self.LocalFileClass().FinalOutputText)
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
