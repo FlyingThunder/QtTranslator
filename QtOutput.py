@@ -103,3 +103,10 @@ class Ui_MainWindow(object):
         self.Combo_Output.setItemText(1, _translate("MainWindow", "de"))
         self.Combo_Output.setItemText(2, _translate("MainWindow", "Auto"))
 
+class QtFileSystem(object):
+    def setupUi(self):
+        self.title = 'Filedialog'
+        self.left = 10
+        self.top = 10
+        self.width = 640
+        self.height = 480
