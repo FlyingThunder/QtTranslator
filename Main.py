@@ -4,7 +4,6 @@ import QtOutput
 import googletrans
 import BrowseFileSystem
 
-
 class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
 
     def __init__(self, parent=None):
