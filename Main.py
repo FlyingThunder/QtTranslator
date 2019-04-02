@@ -3,6 +3,7 @@ import sys
 import QtOutput
 import googletrans
 import BrowseFileSystem
+import ReadURL
 
 
 class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
@@ -11,6 +12,7 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         super(Translator, self).__init__(parent)
         self.setupUi(self)
         self.LocalFileClass = lambda: BrowseFileSystem.FileSystemWindow()
+        self.LocalURLClass = lambda: ReadURL.URLfetch()
         self.Button_Swap.clicked.connect(lambda: self.ButtonClicked(ButtonType="swap"))
         self.Button_Translate.clicked.connect(lambda: self.ButtonClicked(ButtonType="trans"))
         self.Button_Clean.clicked.connect(self.Clean_Textbox)
@@ -19,7 +21,11 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.TranslatorObj = googletrans.Translator()
         self.ComboInputValue = "auto"
         self.ComboOutputValue = "en"
-        self.ButtonImportFile.clicked.connect(self.ImportFile)
+
+
+        self.fileImport.triggered.connect(self.ImportFile)
+        self.URLImport.triggered.connect(lambda: self.LocalURLClass().importURL())
+
 
 
     def ButtonClicked(self, ButtonType):                                        # funktionsaufrufe bei knopfdruck
@@ -80,7 +86,6 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.Combo_Output.setCurrentText(InputComboBox)
         self.ComboBoxInput()
         self.ComboBoxOutput()
-
 
     def ImportFile(self):                                               # ruft das BrowseFileSystem modul
         self.Text_Input.clear()

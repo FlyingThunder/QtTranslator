@@ -2,7 +2,7 @@ from cx_Freeze import setup, Executable
 
 base = None
 
-executables = [Executable("Main.py", base=base)]
+executables = [Executable("Main.py", base = "WIN32GUI")]
 
 packages = ["idna","sys","googletrans","tika","odf","docx","QtOutput","BrowseFileSystem","multiprocessing"]
 options = {

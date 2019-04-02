@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -65,9 +66,18 @@ class Ui_MainWindow(object):
         self.Button_Swap.setObjectName("Button_Swap")
         self.ButtonLayout.addWidget(self.Button_Swap)
         self.gridLayout.addLayout(self.ButtonLayout, 1, 1, 1, 1)
-        self.ButtonImportFile = QtWidgets.QPushButton(self.centralwidget)
-        self.ButtonImportFile.setObjectName("ImportFile")
-        self.gridLayout.addWidget(self.ButtonImportFile, 0, 0, 1, 1)
+        #self.ButtonImportFile = QtWidgets.QPushButton(self.centralwidget)
+        #self.ButtonImportFile.setObjectName("ImportFile")
+
+        self.menubar = self.menuBar()                                       # initiiere menüleiste
+        self.fileMenu = self.menubar.addMenu('&Import...')                  # füge menüpunkt hinzu
+        self.fileImport = QtWidgets.QAction('&Import File', self)           # definiere aktion zu unterpunkt
+        self.fileMenu.addAction(self.fileImport)                            # füge menü unterpunkt hinzu
+
+        self.URLImport = QtWidgets.QAction('&Import Site', self)
+        self.fileMenu.addAction(self.URLImport)
+
+        #self.gridLayout.addWidget(self.ButtonImportFile, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -97,5 +107,5 @@ class Ui_MainWindow(object):
         self.Button_Clean.setText(_translate("MainWindow", "Clean"))
         self.Button_Translate.setText(_translate("MainWindow", "=>"))
         self.Button_Swap.setText(_translate("MainWindow", "<->"))
-        self.ButtonImportFile.setText(_translate("MainWindow", "Import File"))
+        #self.ButtonImportFile.setText(_translate("MainWindow", "Import File"))
 
