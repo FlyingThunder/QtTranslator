@@ -21,7 +21,7 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.ButtonImportFile.clicked.connect(self.ImportFile)
 
 
-    def ButtonClicked(self, ButtonType):
+    def ButtonClicked(self, ButtonType):                                        # funktionsaufrufe bei knopfdruck
         if ButtonType == "trans":
             if self.Text_Input.toPlainText():
                 self.Translate_Function()
@@ -34,30 +34,33 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.Text_Input.clear()
         self.Text_Output.clear()
 
-    def Translate_Function(self):
+    def Translate_Function(self):                                               # einfügen von text, anpassen von comboboxen bei übersetzung
         inputText = self.Text_Input.toPlainText()
         self.Text_Output.clear()
         OutputText = self.TranslateText(InputTranslate=inputText, InputLanguage=self.ComboInputValue, OutputLanguage=self.ComboOutputValue)
         self.Combo_Input.setCurrentText(str(self.TranslatedSource))
         self.Text_Output.append(OutputText)
 
-    def TranslateText(self, InputTranslate, InputLanguage, OutputLanguage):
+    def TranslateText(self, InputTranslate, InputLanguage, OutputLanguage):     # eigentliche "übersetzung" findet hier statt
         output = self.TranslatorObj.translate(src=InputLanguage, dest=OutputLanguage, text=InputTranslate)
-        return self.StringCleaning(inputString=output)
-
-    def StringCleaning(self, inputString):
-        print(str(inputString))
-        TranslatedText = str(inputString).lstrip("Translated").strip("(").strip(")").split(",")[2].split("=")[1]
-        self.TranslatedSource = str(inputString).lstrip("Translated").strip("(").strip(")").split(",")[0].split("=")[1]
-        return TranslatedText
+        self.TranslatedSource = str(output.src)
+        if self.TranslatedSource == OutputLanguage:
+            if OutputLanguage is not "en":
+                self.ComboOutputValue = "en"
+                self.Combo_Output.setCurrentText("en")
+            elif OutputLanguage == "en":
+                self.ComboOutputValue = "de"
+                self.Combo_Output.setCurrentText("de")
+            output = self.TranslatorObj.translate(src=InputLanguage, dest=self.ComboOutputValue, text=InputTranslate)
+        return str(output.text)
 
     def ComboBoxInput(self):
-        self.ComboInputValue = str(self.Combo_Input.currentText())
+        self.ComboInputValue = str(self.Combo_Input.currentText())      # ändert den wert der input sprach-combobox wenn benutzer dies tut
 
     def ComboBoxOutput(self):
-        self.ComboOutputValue = str(self.Combo_Output.currentText())
+        self.ComboOutputValue = str(self.Combo_Output.currentText())    # ändert den wert der output sprach-combobox wenn benutzer dies tut
 
-    def TextBoxSwap(self):
+    def TextBoxSwap(self):                                              # tauscht den text der linken und rechten textbox miteinander
         InputBox = self.Text_Input.toPlainText()
         OutputBox = self.Text_Output.toPlainText()
         self.Text_Input.clear()
@@ -65,9 +68,9 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.Text_Output.clear()
         self.Text_Output.append(InputBox)
 
-    def ComboBoxSwap(self):
+    def ComboBoxSwap(self):                                             # tauscht beim tauschen des texts auch die sprachen aus der combobox
         if self.Combo_Input.currentText() == "Auto":
-            InputComboBox = self.TranslatedSource
+            InputComboBox = self.TranslatedSource                       # ersetzt "auto" durch die inputsprache, da die output-sprache nicht auto sein darf
         else:
             InputComboBox = self.Combo_Input.currentText()
 
@@ -78,11 +81,11 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.ComboBoxOutput()
 
 
-    def ImportFile(self):
+    def ImportFile(self):                                               # ruft das BrowseFileSystem modul
         self.Text_Input.clear()
         self.Text_Input.append(self.LocalFileClass().FinalOutputText)
 
-def main():
+def main():                                                             # mainloop
     app = QtWidgets.QApplication(sys.argv)
     form = Translator()
     form.show()

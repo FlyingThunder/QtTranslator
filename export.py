@@ -4,11 +4,11 @@ base = None
 
 executables = [Executable("Main.py", base=base)]
 
-packages = ["idna","sys","googletrans","QtOutput","multiprocessing"]
+packages = ["idna","sys","googletrans","tika","odf","docx","QtOutput","BrowseFileSystem","multiprocessing"]
 options = {
     'build_exe': {
         'packages':packages,
-        'includes':["PyQt5"]
+        'includes':["PyQt5","odf","docx","tika"]
     },
 }
 

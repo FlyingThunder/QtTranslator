@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QFileDialog
 from odf import text, teletype
 from odf.opendocument import load
+from tika import parser
+import docx
 import sys
 
 
@@ -24,20 +26,44 @@ class FileSystemWindow(QWidget):
 
     def openFileNameDialog(self):
         options = QFileDialog.Options()
-        fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
+        self.fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
                                                   "All Files (*);;Python Files (*.py);;Text Files (*.txt);;OpenOffice Files (*.odt);;Microsoft Word Files (*.docx);;PDF Files (*.pdf)", options=options)
-        if fileName:
-            if ".odt" in fileName:
-                self.OutputFinal = self.getODTText()
+        if self.fileName:
+            if ".odt" in self.fileName:
+                self.getODTText()
+
+            elif ".docx" in self.fileName:
+                self.getDOCXText()
+
+            elif ".txt" in self.fileName:
+                self.getTXT()
+
+            elif ".pdf" in self.fileName:
+                self.getPDF()
 
     def getODTText(self):
-        textdoc = load("Test.odt")
+        textdoc = load(self.fileName)
         allparas = textdoc.getElementsByType(text.P)
-        self.FinalOutputText = teletype.extractText(allparas[0])
+        outputlist = []
+        for x in allparas:
+            outputlist.append(teletype.extractText(x))
+        self.FinalOutputText = "".join(outputlist)
 
+    def getDOCXText(self):
+        doc = docx.Document(self.fileName)
+        allText = []
+        for docpara in doc.paragraphs:
+            print(docpara.text)
+            allText.append(docpara.text)
+        self.FinalOutputText = allText[0]
 
-        #TODO: Add .txt, .pdf, .docx support
+    def getTXT(self):
+        with open(self.fileName, "r") as xfile:
+            self.FinalOutputText = xfile.read()
 
+    def getPDF(self):
+        raw = parser.from_file(self.fileName)
+        self.FinalOutputText = raw['content']
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

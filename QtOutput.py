@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'Test_Mini.ui'
-#
-# Created by: PyQt5 UI code generator 5.11.3
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
@@ -35,7 +27,7 @@ class Ui_MainWindow(object):
         self.Combo_Output.setObjectName("Combo_Output")
         self.Combo_Output.addItem("")
         self.Combo_Output.addItem("")
-        self.Combo_Output.addItem("")
+        #self.Combo_Output.addItem("")
         self.horizontalLayout.addWidget(self.Combo_Output)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.gridLayout.addLayout(self.verticalLayout_2, 1, 2, 1, 1)
@@ -92,7 +84,7 @@ class Ui_MainWindow(object):
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.Combo_Output.setItemText(0, _translate("MainWindow", "en"))
         self.Combo_Output.setItemText(1, _translate("MainWindow", "de"))
-        self.Combo_Output.setItemText(2, _translate("MainWindow", "Auto"))
+        #self.Combo_Output.setItemText(2, _translate("MainWindow", "Auto"))
         self.Label_Input.setText(_translate("MainWindow", "Input:"))
         self.Text_Input.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
