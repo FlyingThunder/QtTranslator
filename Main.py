@@ -4,7 +4,7 @@ import QtOutput
 import googletrans
 import BrowseFileSystem
 import ReadURL
-
+import time
 
 class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
 
@@ -24,8 +24,7 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
 
 
         self.fileImport.triggered.connect(self.ImportFile)
-        self.URLImport.triggered.connect(lambda: self.LocalURLClass().importURL())
-
+        self.URLImport.triggered.connect(self.ImportURL)
 
 
     def ButtonClicked(self, ButtonType):                                        # funktionsaufrufe bei knopfdruck
@@ -89,7 +88,11 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
 
     def ImportFile(self):                                               # ruft das BrowseFileSystem modul
         self.Text_Input.clear()
-        self.Text_Input.append(self.LocalFileClass().FinalOutputText)
+        self.Text_Input.insertPlainText(self.LocalFileClass().FinalOutputText)
+
+    def ImportURL(self):
+        self.Text_Input.clear()
+        self.Text_Input.insertPlainText(self.LocalURLClass().ReturnURLContent)
 
 def main():                                                             # mainloop
     app = QtWidgets.QApplication(sys.argv)

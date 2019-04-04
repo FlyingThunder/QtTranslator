@@ -1,17 +1,18 @@
-import urllib
 from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit
 
 class URLfetch(QWidget):
+    def __init__(self):
+        self.ReturnURLContent = ""
+        super().__init__()
+        self.importURL()
+
     def importURL(self):
-        i, okPressed = QInputDialog.getText(self, "Get text", "Your name:", QLineEdit.Normal, "")
+        i, okPressed = QInputDialog.getText(self, "Import website", "Site to import:", QLineEdit.Normal, "https://www.google.de")
         if okPressed:
             self.getURLContent(i)
 
     def getURLContent(self, i):
-        try:
-            f = urllib.urlopen(i)
-            myfile = f.read()
-            print(myfile)
-        except:
-            print("invalid URL")
+        self.ReturnURLContent = i
+
+
 

@@ -28,7 +28,7 @@ class Ui_MainWindow(object):
         self.Combo_Output.setObjectName("Combo_Output")
         self.Combo_Output.addItem("")
         self.Combo_Output.addItem("")
-        #self.Combo_Output.addItem("")
+        self.Combo_Output.addItem("")
         self.horizontalLayout.addWidget(self.Combo_Output)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.gridLayout.addLayout(self.verticalLayout_2, 1, 2, 1, 1)
@@ -48,6 +48,7 @@ class Ui_MainWindow(object):
         self.Combo_Input = QtWidgets.QComboBox(self.centralwidget)
         self.Combo_Input.setEnabled(True)
         self.Combo_Input.setObjectName("Combo_Input")
+        self.Combo_Input.addItem("")
         self.Combo_Input.addItem("")
         self.Combo_Input.addItem("")
         self.Combo_Input.addItem("")
@@ -94,7 +95,7 @@ class Ui_MainWindow(object):
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.Combo_Output.setItemText(0, _translate("MainWindow", "en"))
         self.Combo_Output.setItemText(1, _translate("MainWindow", "de"))
-        #self.Combo_Output.setItemText(2, _translate("MainWindow", "Auto"))
+        self.Combo_Output.setItemText(2, _translate("MainWindow", "ru"))
         self.Label_Input.setText(_translate("MainWindow", "Input:"))
         self.Text_Input.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -104,6 +105,7 @@ class Ui_MainWindow(object):
         self.Combo_Input.setItemText(0, _translate("MainWindow", "Auto"))
         self.Combo_Input.setItemText(1, _translate("MainWindow", "en"))
         self.Combo_Input.setItemText(2, _translate("MainWindow", "de"))
+        self.Combo_Input.setItemText(3, _translate("MainWindow", "ru"))
         self.Button_Clean.setText(_translate("MainWindow", "Clean"))
         self.Button_Translate.setText(_translate("MainWindow", "=>"))
         self.Button_Swap.setText(_translate("MainWindow", "<->"))
