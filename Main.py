@@ -4,7 +4,6 @@ import QtOutput
 import googletrans
 import BrowseFileSystem
 import ReadURL
-import time
 
 class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
 

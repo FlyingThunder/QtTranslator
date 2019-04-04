@@ -9,7 +9,7 @@ loader.page().pdfPrintingFinished.connect(
 loader.load(QtCore.QUrl('https://en.wikipedia.org/wiki/Main_Page'))
 
 def emit_pdf(finished):
-    loader.page().printToPdf("test.pdf")
+    loader.page().printToPdf("temp.pdf")
 
 loader.loadFinished.connect(emit_pdf)
 

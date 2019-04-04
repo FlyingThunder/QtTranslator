@@ -30,40 +30,45 @@ class FileSystemWindow(QWidget):
                                                   "All Files (*);;Python Files (*.py);;Text Files (*.txt);;OpenOffice Files (*.odt);;Microsoft Word Files (*.docx);;PDF Files (*.pdf)", options=options)
         if self.fileName:
             if ".odt" in self.fileName:
-                self.getODTText()
+                self.getODTText(file = self.fileName)
 
             elif ".docx" in self.fileName:
-                self.getDOCXText()
+                self.getDOCXText(file = self.fileName)
 
             elif ".txt" in self.fileName:
-                self.getTXT()
+                self.getTXT(file = self.fileName)
 
             elif ".pdf" in self.fileName:
-                self.getPDF()
+                self.getPDF(file = self.fileName)
 
-    def getODTText(self):
-        textdoc = load(self.fileName)
+    def getODTText(self, file):
+        fileName = file
+        textdoc = load(fileName)
         allparas = textdoc.getElementsByType(text.P)
         outputlist = []
         for x in allparas:
             outputlist.append(teletype.extractText(x))
         self.FinalOutputText = "".join(outputlist)
 
-    def getDOCXText(self):
-        doc = docx.Document(self.fileName)
+    def getDOCXText(self, file):
+        fileName = file
+        doc = docx.Document(fileName)
         allText = []
         for docpara in doc.paragraphs:
             print(docpara.text)
             allText.append(docpara.text)
         self.FinalOutputText = allText[0]
 
-    def getTXT(self):
-        with open(self.fileName, "r") as xfile:
+    def getTXT(self, file):
+        fileName = file
+        with open(fileName, "r") as xfile:
             self.FinalOutputText = xfile.read()
 
-    def getPDF(self):
-        raw = parser.from_file(self.fileName)
+    def getPDF(self, file):
+        fileName = file
+        raw = parser.from_file(fileName)
         self.FinalOutputText = raw['content']
+        return self.FinalOutputText
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
