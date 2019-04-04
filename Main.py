@@ -4,6 +4,8 @@ import QtOutput
 import googletrans
 import BrowseFileSystem
 import ReadURL
+import re
+import os
 
 class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
 
@@ -20,6 +22,10 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.TranslatorObj = googletrans.Translator()
         self.ComboInputValue = "auto"
         self.ComboOutputValue = "en"
+        try:
+            os.remove("temp.pdf")
+        except:
+            print("test0")
 
 
         self.fileImport.triggered.connect(self.ImportFile)
@@ -41,10 +47,13 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
 
     def Translate_Function(self):                                               # einfügen von text, anpassen von comboboxen bei übersetzung
         inputText = self.Text_Input.toPlainText()
+        print(len(self.Text_Input.toPlainText()))
+        print(int(len(inputText)))
         self.Text_Output.clear()
-        OutputText = self.TranslateText(InputTranslate=inputText, InputLanguage=self.ComboInputValue, OutputLanguage=self.ComboOutputValue)
-        self.Combo_Input.setCurrentText(str(self.TranslatedSource))
-        self.Text_Output.append(OutputText)
+        if int(len(inputText))<5000:
+            OutputText = self.TranslateText(InputTranslate=inputText, InputLanguage=self.ComboInputValue, OutputLanguage=self.ComboOutputValue)
+            self.Combo_Input.setCurrentText(str(self.TranslatedSource))
+            self.Text_Output.append(OutputText)
 
     def TranslateText(self, InputTranslate, InputLanguage, OutputLanguage):     # eigentliche "übersetzung" findet hier statt
         output = self.TranslatorObj.translate(src=InputLanguage, dest=OutputLanguage, text=InputTranslate)
@@ -87,11 +96,11 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
 
     def ImportFile(self):                                               # ruft das BrowseFileSystem modul
         self.Text_Input.clear()
-        self.Text_Input.insertPlainText(self.LocalFileClass().FinalOutputText)
+        self.Text_Input.insertPlainText(self.LocalFileClass().FinalOutputText[0:4999])
 
     def ImportURL(self):
         self.Text_Input.clear()
-        self.Text_Input.insertPlainText(self.LocalURLClass().ReturnURLContent)
+        self.Text_Input.insertPlainText(re.sub(r'(\n)\1+', r'\1', self.LocalURLClass().ReturnURLContent)[0:4999])
 
 def main():                                                             # mainloop
     app = QtWidgets.QApplication(sys.argv)

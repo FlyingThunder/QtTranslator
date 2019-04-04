@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QFileDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QFileDialog, QMessageBox
 from odf import text, teletype
 from odf.opendocument import load
 from tika import parser
@@ -41,6 +41,10 @@ class FileSystemWindow(QWidget):
             elif ".pdf" in self.fileName:
                 self.getPDF(file = self.fileName)
 
+            else:
+                QMessageBox.about(self, "Error", "Invalid file type")
+
+
     def getODTText(self, file):
         fileName = file
         textdoc = load(fileName)
@@ -68,6 +72,7 @@ class FileSystemWindow(QWidget):
         fileName = file
         raw = parser.from_file(fileName)
         self.FinalOutputText = raw['content']
+        #print(self.FinalOutputText)
         return self.FinalOutputText
 
 if __name__ == '__main__':
