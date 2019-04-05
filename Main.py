@@ -53,7 +53,7 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
             self.Combo_Input.setCurrentText(str(self.TranslatedSource))
             self.Text_Output.append(OutputText)
 
-    def TranslateText(self, InputTranslate, InputLanguage, OutputLanguage):     # eigentliche "übersetzung" findet hier statt
+    def TranslateText(self, InputTranslate, InputLanguage, OutputLanguage):      # eigentliche "übersetzung" findet hier statt
         output = self.TranslatorObj.translate(src=InputLanguage, dest=OutputLanguage, text=InputTranslate)
         self.TranslatedSource = str(output.src)
         if self.TranslatedSource == OutputLanguage:
