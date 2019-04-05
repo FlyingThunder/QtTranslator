@@ -3,17 +3,22 @@ import sys
 import QtOutput
 import googletrans
 import BrowseFileSystem
-import ReadURL
+import LoadURLContent
 import re
 import os
 
 class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
 
     def __init__(self, parent=None):
+        try:
+            os.remove("temp.pdf")
+        except:
+            print("test0")
         super(Translator, self).__init__(parent)
         self.setupUi(self)
-        self.LocalFileClass = lambda: BrowseFileSystem.FileSystemWindow()
-        self.LocalURLClass = lambda: ReadURL.URLfetch()
+        self.setupUx()
+
+    def setupUx(self):
         self.Button_Swap.clicked.connect(lambda: self.ButtonClicked(ButtonType="swap"))
         self.Button_Translate.clicked.connect(lambda: self.ButtonClicked(ButtonType="trans"))
         self.Button_Clean.clicked.connect(self.Clean_Textbox)
@@ -22,14 +27,9 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.TranslatorObj = googletrans.Translator()
         self.ComboInputValue = "auto"
         self.ComboOutputValue = "en"
-        try:
-            os.remove("temp.pdf")
-        except:
-            print("test0")
-
-
         self.fileImport.triggered.connect(self.ImportFile)
         self.URLImport.triggered.connect(self.ImportURL)
+
 
 
     def ButtonClicked(self, ButtonType):                                        # funktionsaufrufe bei knopfdruck
@@ -47,8 +47,6 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
 
     def Translate_Function(self):                                               # einfügen von text, anpassen von comboboxen bei übersetzung
         inputText = self.Text_Input.toPlainText()
-        print(len(self.Text_Input.toPlainText()))
-        print(int(len(inputText)))
         self.Text_Output.clear()
         if int(len(inputText))<5000:
             OutputText = self.TranslateText(InputTranslate=inputText, InputLanguage=self.ComboInputValue, OutputLanguage=self.ComboOutputValue)
@@ -95,19 +93,24 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.ComboBoxOutput()
 
     def ImportFile(self):                                               # ruft das BrowseFileSystem modul
+        localFileclass = BrowseFileSystem.FileSystemWindow()
         self.Text_Input.clear()
-        self.Text_Input.insertPlainText(self.LocalFileClass().FinalOutputText[0:4999])
+        self.Text_Input.insertPlainText(localFileclass.FinalOutputText[0:4999])
 
     def ImportURL(self):
-        self.Text_Input.clear()
-        self.Text_Input.insertPlainText(re.sub(r'(\n)\1+', r'\1', self.LocalURLClass().ReturnURLContent)[0:4999])
+        i, okPressed = QtWidgets.QInputDialog.getText(self, "Import website", "Site to import:", QtWidgets.QLineEdit.Normal,
+                                            "e.g. https://www.google.de")
+        if okPressed:
+            localURLclass = LoadURLContent.LoadHTML()
+            self.Text_Input.clear()
+            self.Text_Input.insertPlainText(re.sub(r'(\n)\1+', r'\1', localURLclass.getWebsite(site=i))[0:4999])            #hier soll programm warten bis .pdf überhaupt existiert - wie?
+
 
 def main():                                                             # mainloop
     app = QtWidgets.QApplication(sys.argv)
     form = Translator()
     form.show()
     app.exec_()
-
 
 if __name__ == '__main__':
     main()
