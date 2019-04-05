@@ -7,18 +7,18 @@ class LoadHTML(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.printapp = QtWidgets.QApplication(sys.argv)
-        self.loader = QtWebEngineWidgets.QWebEngineView()
+        self.output = ".pdf import failed"
 
-    def getPDF(self, file):
-        fileName = file
-        raw = parser.from_file(fileName)
-        return raw['content']
+    def getPDF(self):
+        raw = parser.from_file("temp.pdf")
+        self.output = raw['content']
 
 
     def getWebsite(self, site):
+        self.app = QtWidgets.QApplication(sys.argv)
+        self.loader = QtWebEngineWidgets.QWebEngineView()
         self.loader.setZoomFactor(1)
-        self.loader.page().pdfPrintingFinished.connect(self.pdfCreated)
+        self.loader.page().pdfPrintingFinished.connect(self.getPDF)
         self.loader.load(QtCore.QUrl(site))
 
 
@@ -27,12 +27,8 @@ class LoadHTML(QWidget):
 
 
         self.loader.loadFinished.connect(emit_pdf)
-
-
-    def pdfCreated(self):
-        print("pdf generated")
-        return(self.getPDF("temp.pdf"))
+        return self.output
 
 
 if __name__ == '__main__':
-    LoadHTML().printapp.exec()
+    LoadHTML().app.exec()

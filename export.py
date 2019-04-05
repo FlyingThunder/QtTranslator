@@ -4,7 +4,7 @@ base = None
 
 executables = [Executable("Main.py", base = "WIN32GUI")]
 
-packages = ["idna","sys","googletrans","tika","odf","docx","QtOutput","BrowseFileSystem","multiprocessing"]
+packages = ["idna","sys","googletrans","tika","odf","docx","QtOutput","BrowseFileSystem","LoadURLContent","multiprocessing"]
 options = {
     'build_exe': {
         'packages':packages,

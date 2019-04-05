@@ -72,7 +72,6 @@ class FileSystemWindow(QWidget):
         fileName = file
         raw = parser.from_file(fileName)
         self.FinalOutputText = raw['content']
-        #print(self.FinalOutputText)
         return self.FinalOutputText
 
 if __name__ == '__main__':
