@@ -9,12 +9,12 @@ class LoadHTML(QWidget):
         super().__init__()
         self.output = ".pdf import failed"
 
-    def getPDF(self):
+    def getPDF(self):                       # pdf auslesen
         raw = parser.from_file("temp.pdf")
         self.output = raw['content']
 
 
-    def getWebsite(self, site):
+    def getWebsite(self, site):             # webseite als pdf speichern
         self.app = QtWidgets.QApplication(sys.argv)
         self.loader = QtWebEngineWidgets.QWebEngineView()
         self.loader.setZoomFactor(1)

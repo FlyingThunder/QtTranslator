@@ -24,7 +24,7 @@ class FileSystemWindow(QWidget):
         self.openFileNameDialog()
         self.show()
 
-    def openFileNameDialog(self):
+    def openFileNameDialog(self):                                   # dateiauswahl
         options = QFileDialog.Options()
         self.fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
                                                   "All Files (*);;Python Files (*.py);;Text Files (*.txt);;OpenOffice Files (*.odt);;Microsoft Word Files (*.docx);;PDF Files (*.pdf)", options=options)

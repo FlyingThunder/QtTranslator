@@ -3,7 +3,6 @@ import sys
 
 class LoadURLContent():
 
-
     def getWebsite(self, site):
         app = QtWidgets.QApplication(sys.argv)
         loader = QtWebEngineWidgets.QWebEngineView()
