@@ -103,7 +103,7 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         if okPressed:
             localURLclass = LoadURLContent.LoadHTML()
             self.Text_Input.clear()
-            self.Text_Input.insertPlainText(re.sub(r'(\n)\1+', r'\1', localURLclass.getWebsite(site=i))[0:4999])            #hier soll programm warten bis .pdf überhaupt existiert - wie?
+            self.Text_Input.insertPlainText(re.sub(r'(\n)\1+', r'\1', localURLclass.getWebsite(site=i))[0:4999])            #hier soll programm warten bis getPDF fertig ist - macht es aber nicht
 
 
 def main():                                                             # mainloop
