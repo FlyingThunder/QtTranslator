@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QWidget, QFileDialog, QMessageBox
 from odf import text, teletype
 from odf.opendocument import load
 from tika import parser
@@ -22,11 +22,10 @@ class FileSystemWindow(QWidget):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
         self.openFileNameDialog()
-        self.show()
 
     def openFileNameDialog(self):                                   # dateiauswahl
         options = QFileDialog.Options()
-        self.fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
+        self.fileName, _ = QFileDialog.getOpenFileName(self, "Select a file", "",
                                                   "All Files (*);;Python Files (*.py);;Text Files (*.txt);;OpenOffice Files (*.odt);;Microsoft Word Files (*.docx);;PDF Files (*.pdf)", options=options)
         if self.fileName:
             if ".odt" in self.fileName:
@@ -74,7 +73,7 @@ class FileSystemWindow(QWidget):
         self.FinalOutputText = raw['content']
         return self.FinalOutputText
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = FileSystemWindow()
-    sys.exit(app.exec_())
+# if __name__ == '__main__':
+#     app = QApplication(sys.argv)
+#     ex = FileSystemWindow()
+#     sys.exit(app.exec_())

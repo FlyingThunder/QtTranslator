@@ -1,11 +1,11 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtWebEngineWidgets
 import sys
 import QtOutput
 import googletrans
 import BrowseFileSystem
-import LoadURLContent
 import re
 import os
+from tika import parser
 
 class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
 
@@ -97,16 +97,27 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.Text_Input.clear()
         self.Text_Input.insertPlainText(localFileclass.FinalOutputText[0:4999])
 
+    def getPDF(self):                       # pdf auslesen
+        raw = parser.from_file("temp.pdf")
+        self.output = raw['content']
+        self.Text_Input.insertPlainText(re.sub(r'(\n)\1+', r'\1', self.output)[0:4999])
+
+    def getWebsite(self, site):             # webseite als pdf speichern
+        loader = QtWebEngineWidgets.QWebEngineView()
+        loader.setZoomFactor(1)
+        loader.load(QtCore.QUrl(site))
+        def emit_pdf(finished):
+            loader.page().printToPdf("temp.pdf")
+            loader.page().pdfPrintingFinished.connect(lambda: self.getPDF())
+        loader.loadFinished.connect(emit_pdf)
+
     def ImportURL(self):
-        i, okPressed = QtWidgets.QInputDialog.getText(self, "Import website", "Site to import:", QtWidgets.QLineEdit.Normal,
-                                            "e.g. https://www.google.de")
+        i, okPressed = QtWidgets.QInputDialog.getText(self, "Import website", "Site to import:", QtWidgets.QLineEdit.Normal, "https://www.google.de")
+
         if okPressed:
-            localURLclass = LoadURLContent.LoadHTML()
-            self.Text_Input.clear()
-            self.Text_Input.insertPlainText(re.sub(r'(\n)\1+', r'\1', localURLclass.getWebsite(site=i))[0:4999])            #hier soll programm warten bis getPDF fertig ist - macht es aber nicht
+            self.getWebsite(i)
 
-
-def main():                                                             # mainloop
+def main():
     app = QtWidgets.QApplication(sys.argv)
     form = Translator()
     form.show()
