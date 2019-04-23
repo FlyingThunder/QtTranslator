@@ -13,7 +13,7 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         try:
             os.remove("temp.pdf")
         except:
-            print("test0")
+            pass
         super(Translator, self).__init__(parent)
         self.setupUi(self)
         self.setupUx()
@@ -56,12 +56,12 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
     def TranslateText(self, InputTranslate, InputLanguage, OutputLanguage):      # eigentliche "übersetzung" findet hier statt
         output = self.TranslatorObj.translate(src=InputLanguage, dest=OutputLanguage, text=InputTranslate)
         self.TranslatedSource = str(output.src)
-        if self.TranslatedSource == OutputLanguage:
-            if OutputLanguage is not "en":
-                self.ComboOutputValue = "en"
+        if self.TranslatedSource == OutputLanguage:             #wenn die sprache des zu übersetzenden textes und die zielsprache identisch ist, dann...
+            if OutputLanguage is not "en":                      #wenn die ausgangssprache nicht englisch ist:
+                self.ComboOutputValue = "en"                    #ausgangssprache auf englisch setzen
                 self.Combo_Output.setCurrentText("en")
-            elif OutputLanguage == "en":
-                self.ComboOutputValue = "de"
+            elif OutputLanguage == "en":                        #wenn die ausgangssprache englisch ist:
+                self.ComboOutputValue = "de"                    #ausgangssprache auf deutsch setzen
                 self.Combo_Output.setCurrentText("de")
             output = self.TranslatorObj.translate(src=InputLanguage, dest=self.ComboOutputValue, text=InputTranslate)
         return str(output.text)
@@ -95,27 +95,34 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
     def ImportFile(self):                                               # ruft das BrowseFileSystem modul
         localFileclass = BrowseFileSystem.FileSystemWindow()
         self.Text_Input.clear()
-        self.Text_Input.insertPlainText(localFileclass.FinalOutputText[0:4999])
+        self.Text_Input.insertPlainText(localFileclass.FinalOutputText[0:4999])         #text auf 5000 zeichen begrenzen (limitation von der google translate API)
 
-    def getPDF(self):                       # pdf auslesen
+    def getPDF(self):                       #pdf auslesen
         raw = parser.from_file("temp.pdf")
-        self.output = raw['content']
-        self.Text_Input.insertPlainText(re.sub(r'(\n)\1+', r'\1', self.output)[0:4999])
+        self.output = raw['content']            #plaintext auslesen
+        self.Text_Input.insertPlainText(re.sub(r'(\n)\1+', r'\1', self.output)[0:4999])             #plaintext formatieren (leere zeilen und umbrüche formatieren und auf max. 5000 zeichen begrenzen)
 
-    def getWebsite(self, site):             # webseite als pdf speichern
+
+    def getWebsite(self, site):             #webseite als pdf speichern
         loader = QtWebEngineWidgets.QWebEngineView()
         loader.setZoomFactor(1)
         loader.load(QtCore.QUrl(site))
         def emit_pdf(finished):
-            loader.page().printToPdf("temp.pdf")
-            loader.page().pdfPrintingFinished.connect(lambda: self.getPDF())
-        loader.loadFinished.connect(emit_pdf)
+            loader.page().printToPdf("temp.pdf")                #inhalt als PDF datei speichern
+            loader.page().pdfPrintingFinished.connect(lambda: self.getPDF())        #wenn PDF datei gespeichert wurde getPDF aufrufen
+        loader.loadFinished.connect(emit_pdf)                   #wenn HTML inhalt geladen ist emit_pdf aufrufen
 
-    def ImportURL(self):
+    def ImportURL(self):                     #URL dialog aufrufen
         i, okPressed = QtWidgets.QInputDialog.getText(self, "Import website", "Site to import:", QtWidgets.QLineEdit.Normal, "https://www.google.de")
 
         if okPressed:
             self.getWebsite(i)
+
+    def closeEvent(self, event):            #temporäre datei entfernen
+        try:
+            os.remove("temp.pdf")
+        except:
+            pass
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
