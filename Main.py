@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtWidgets, QtWebEngineWidgets
 import sys
 import QtOutput
+import Settings
 import googletrans
 import BrowseFileSystem
 import re
@@ -8,7 +9,6 @@ import os
 from tika import parser
 
 class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
-
     def __init__(self, parent=None):
         try:
             os.remove("temp.pdf")
@@ -16,6 +16,7 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
             pass
         super(Translator, self).__init__(parent)
         self.setupUi(self)
+        self.dialog = ShowSettings(self)
         self.setupUx()
 
     def setupUx(self):
@@ -29,6 +30,7 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.ComboOutputValue = "en"
         self.fileImport.triggered.connect(self.ImportFile)
         self.URLImport.triggered.connect(self.ImportURL)
+        self.MenuSettings.triggered.connect(self.SettingsMenu)
 
 
 
@@ -118,11 +120,21 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         if okPressed:
             self.getWebsite(i)
 
+    def SettingsMenu(self):
+        self.dialog.show()
+
     def closeEvent(self, event):            #temporäre datei entfernen
         try:
             os.remove("temp.pdf")
         except:
             pass
+
+
+class ShowSettings(QtWidgets.QMainWindow, Settings.Ui_Form):
+    def __init__(self, parent=None):
+        super(ShowSettings, self).__init__(parent)
+        self.setupUi(self)
+
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
