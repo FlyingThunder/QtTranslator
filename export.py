@@ -1,20 +1,18 @@
+import sys
 from cx_Freeze import setup, Executable
 
-base = None
-executables = [Executable("Main.py", base = "WIN32GUI")]
 
-packages = ["idna","sys","googletrans","tika","odf","docx","QtOutput","BrowseFileSystem","multiprocessing"]
-options = {
-    'build_exe': {
-        'packages':packages,
-        'includes':["PyQt5","odf","docx","tika"]
-    },
+build_exe_options = {
+    "packages": ["idna","sys","googletrans","tika","odf","docx","re","time", "shutil", "functools","multiprocessing"], 
+    "includes": ["QtOutput", "Settings", "BrowseFileSystem"] # <-- Include easy_gui
 }
 
-setup(
-    name = "Translator",
-    options = options,
-    version = "1",
-    description = 'Test .exe Build',
-    executables = executables
-)
+base = None
+if sys.platform == "win32":
+	base = "Win32GUI"
+
+setup(  name = "Translator",
+        version = "0.1",
+        description = "Python 3 Translator with PyQt5",
+        options = {"build_exe": build_exe_options},
+        executables = [Executable("Main.py", base=base)])
