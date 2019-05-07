@@ -7,7 +7,9 @@ import BrowseFileSystem
 import re
 import os
 import time
+from shutil import copyfile
 from tika import parser
+from functools import partial
 
 
 class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
@@ -48,10 +50,6 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
     def Clean_Textbox(self):
         self.Text_Input.clear()
         self.Text_Output.clear()
-        try:
-            print(self.dialog.setting1var)
-        except:
-            print("nicht zugewiesen")
 
     def saveOutput(self):
         resultname = self.Text_Output.toPlainText()[0:10]
@@ -60,6 +58,13 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
             x.write(self.Text_Output.toPlainText())
         x.close()
 
+    def leet_replace(self, text_to_leet):
+        rep = {"a": "4", "e": "3", "i": "1", "o": "0", "s": "5", "x": "text"}
+        for i, j in rep.items():
+            text_to_leet = text_to_leet.replace(i, j)
+        return text_to_leet
+
+    rep = {"a": "4", "e": "3", "i": "1", "o": "0", "s": "5", "x": "text"}
 
     def Translate_Function(self):                                               # einfügen von text, anpassen von comboboxen bei übersetzung
         inputText = self.Text_Input.toPlainText()
@@ -67,6 +72,8 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         if int(len(inputText))<5000:
             OutputText = self.TranslateText(InputTranslate=inputText, InputLanguage=self.ComboInputValue, OutputLanguage=self.ComboOutputValue)
             self.Combo_Input.setCurrentText(str(self.TranslatedSource))
+            if self.dialog.setting4var == 1:
+                OutputText = self.leet_replace(OutputText)
             self.Text_Output.append(OutputText)
             if self.dialog.setting2var == 1:
                 self.saveOutput()
@@ -125,6 +132,10 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
             self.Text_Input.insertPlainText(self.cutURLOutput[0:4999])
         else:
             self.Text_Input.insertPlainText(self.cutOutput[0:4999])       #plaintext formatieren (leere zeilen und umbrüche formatieren und auf max. 5000 zeichen begrenzen)
+        print(self.dialog.setting3var)
+        if self.dialog.setting3var == 1:                                #pdf wird auf wunsch gespeichert
+            timestring = time.strftime("%Y%m%d-%H%M%S")
+            copyfile("temp.pdf", "Website_"+timestring+".pdf")
 
 
     def getWebsite(self, site):             #webseite als pdf speichern
@@ -136,10 +147,21 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
             loader.page().pdfPrintingFinished.connect(lambda: self.getPDF())        #wenn PDF datei gespeichert wurde getPDF aufrufen
         loader.loadFinished.connect(emit_pdf)                   #wenn HTML inhalt geladen ist emit_pdf aufrufen
 
-    def ImportURL(self):                     #URL dialog aufrufen
-        i, okPressed = QtWidgets.QInputDialog.getText(self, "Import website", "Site to import:", QtWidgets.QLineEdit.Normal, "https://www.google.de")
+    def on_timeout(self, dialog):                               #umständliches rumgefriemel, damit der URL Dialog nicht in der größe verändert werden kann
+        lay = dialog.layout()
+        lay.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
+        dialog.setFixedSize(QtCore.QSize(300, 100))
 
-        if okPressed:
+    def ImportURL(self):                     #URL dialog aufrufen
+        InputDialog = QtWidgets.QInputDialog(self, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint) #den unnötigen "?" Knopf im dialogfenster entfernen (Hilfe gibbet nicht)
+        InputDialog.setWindowTitle("Import website")
+        InputDialog.setLabelText("Site to Import")
+        InputDialog.setTextValue("https://de.wikipedia.org/wiki/Wikipedia:Hauptseite")
+        InputDialog.setTextEchoMode(QtWidgets.QLineEdit.Normal)
+        wrapper = partial(self.on_timeout, InputDialog)
+        QtCore.QTimer.singleShot(0, wrapper)
+        if InputDialog.exec_() == QtWidgets.QDialog.Accepted:
+            i = InputDialog.textValue()
             self.getWebsite(i)
 
     def SettingsMenu(self):
@@ -157,6 +179,8 @@ class ShowSettings(Settings.Ui_MainWindow, QtWidgets.QMainWindow):
         self.setupUi(self)
         self.setting1var = 0
         self.setting2var = 0
+        self.setting3var = 0
+        self.setting4var = 0
         self.checkBox.stateChanged.connect(self.setting1)
         self.checkBox_2.stateChanged.connect(self.setting2)
         self.checkBox_3.stateChanged.connect(self.setting3)
@@ -175,10 +199,16 @@ class ShowSettings(Settings.Ui_MainWindow, QtWidgets.QMainWindow):
             self.setting2var = 0
 
     def setting3(self):
-        pass
+        if self.checkBox_3.isChecked():
+            self.setting3var = 1
+        else:
+            self.setting3var = 0
 
     def setting4(self):
-        pass
+        if self.checkBox_4.isChecked():
+            self.setting4var = 1
+        else:
+            self.setting4var = 0
 
 
 

@@ -67,8 +67,6 @@ class Ui_MainWindow(object):
         self.Button_Swap.setObjectName("Button_Swap")
         self.ButtonLayout.addWidget(self.Button_Swap)
         self.gridLayout.addLayout(self.ButtonLayout, 1, 1, 1, 1)
-        #self.ButtonImportFile = QtWidgets.QPushButton(self.centralwidget)
-        #self.ButtonImportFile.setObjectName("ImportFile")
 
         self.menubar = self.menuBar()                                       # initiiere menüleiste
         self.fileMenu = self.menubar.addMenu('&Import...')                  # füge menüpunkt hinzu
@@ -112,5 +110,4 @@ class Ui_MainWindow(object):
         self.Button_Clean.setText(_translate("MainWindow", "Clean"))
         self.Button_Translate.setText(_translate("MainWindow", "=>"))
         self.Button_Swap.setText(_translate("MainWindow", "<->"))
-        #self.ButtonImportFile.setText(_translate("MainWindow", "Import File"))
 
