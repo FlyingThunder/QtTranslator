@@ -8,6 +8,7 @@ This programm uses
 * python-docx to extract text from .doc files (https://pypi.org/project/python-docx/)
 * odfpy to extract text from .odt files(https://pypi.org/project/odfpy/)
 * tika to extract text from .pdf files (https://pypi.org/project/tika/)
+
 and a variety of built-in python modules
 
 # Setup
