@@ -34,7 +34,7 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.ComboOutputValue = "en"
         self.fileImport.triggered.connect(self.ImportFile)
         self.URLImport.triggered.connect(self.ImportURL)
-        self.MenuSettings.triggered.connect(self.SettingsMenu)
+        self.settingsButton.triggered.connect(self.SettingsMenu)
 
 
 

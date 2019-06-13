@@ -76,10 +76,9 @@ class Ui_MainWindow(object):
         self.URLImport = QtWidgets.QAction('&Import Site', self)
         self.fileMenu.addAction(self.URLImport)
 
-        self.MenuSettings = QtWidgets.QAction('&Settings', self)
-        self.fileMenu.addAction(self.MenuSettings)
+        self.settingsButton = self.menubar.addAction("Settings")
 
-        #self.gridLayout.addWidget(self.ButtonImportFile, 0, 0, 1, 1)
+
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
