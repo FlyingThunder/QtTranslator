@@ -23,7 +23,7 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.dialog = ShowSettings(self)
         self.setupUx()
 
-    def setupUx(self):
+    def setupUx(self):                                               #funktionen zu den einzelnen UI elementen hinzufügen
         self.Button_Swap.clicked.connect(lambda: self.ButtonClicked(ButtonType="swap"))
         self.Button_Translate.clicked.connect(lambda: self.ButtonClicked(ButtonType="trans"))
         self.Button_Clean.clicked.connect(self.Clean_Textbox)
@@ -36,9 +36,7 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.URLImport.triggered.connect(self.ImportURL)
         self.settingsButton.triggered.connect(self.SettingsMenu)
 
-
-
-    def ButtonClicked(self, ButtonType):                                        # funktionsaufrufe bei knopfdruck
+    def ButtonClicked(self, ButtonType):
         if ButtonType == "trans":
             if self.Text_Input.toPlainText():
                 self.Translate_Function()
@@ -51,14 +49,14 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         self.Text_Input.clear()
         self.Text_Output.clear()
 
-    def saveOutput(self):
+    def saveOutput(self):               #Einstellung, bei der Output in einer Textdatei gespeichert wird
         resultname = self.Text_Output.toPlainText()[0:10]
         timestr = time.strftime("%Y%m%d-%H%M%S")
         with open(resultname+"_"+timestr+".txt", "w") as x:
             x.write(self.Text_Output.toPlainText())
         x.close()
 
-    def leet_replace(self, text_to_leet):
+    def leet_replace(self, text_to_leet):                   #L3375P33CH!!!11
         rep = {"a": "4", "e": "3", "i": "1", "o": "0", "s": "5", "x": "text"}
         for i, j in rep.items():
             text_to_leet = text_to_leet.replace(i, j)
@@ -173,7 +171,7 @@ class Translator(QtWidgets.QMainWindow, QtOutput.Ui_MainWindow):
         except:
             pass
 
-class ShowSettings(Settings.Ui_MainWindow, QtWidgets.QMainWindow):
+class ShowSettings(Settings.Ui_MainWindow, QtWidgets.QMainWindow):              #Variablen des "Settings" fensters
     def __init__(self, parent=None):
         super(ShowSettings, self).__init__(parent)
         self.setupUi(self)

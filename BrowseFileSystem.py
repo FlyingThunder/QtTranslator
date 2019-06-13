@@ -44,7 +44,7 @@ class FileSystemWindow(QWidget):
                 QMessageBox.about(self, "Error", "Invalid file type")
 
 
-    def getODTText(self, file):
+    def getODTText(self, file):             #odt datei wird gelesen
         fileName = file
         textdoc = load(fileName)
         allparas = textdoc.getElementsByType(text.P)
@@ -53,7 +53,7 @@ class FileSystemWindow(QWidget):
             outputlist.append(teletype.extractText(x))
         self.FinalOutputText = "".join(outputlist)
 
-    def getDOCXText(self, file):
+    def getDOCXText(self, file):             #docx datei wird gelesen
         fileName = file
         doc = docx.Document(fileName)
         allText = []
@@ -62,18 +62,13 @@ class FileSystemWindow(QWidget):
             allText.append(docpara.text)
         self.FinalOutputText = allText[0]
 
-    def getTXT(self, file):
+    def getTXT(self, file):             #txt datei wird gelesen
         fileName = file
         with open(fileName, "r") as xfile:
             self.FinalOutputText = xfile.read()
 
-    def getPDF(self, file):
+    def getPDF(self, file):             #pdf datei wird gelesen
         fileName = file
         raw = parser.from_file(fileName)
         self.FinalOutputText = raw['content']
         return self.FinalOutputText
-
-# if __name__ == '__main__':
-#     app = QApplication(sys.argv)
-#     ex = FileSystemWindow()
-#     sys.exit(app.exec_())
